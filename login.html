@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>GradingOne – Accedi</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+  <header>
+    <img src="logo.png" alt="GradingOne Logo" class="logo">
+    <h1>Accedi alla Beta</h1>
+  </header>
+
+  <section class="intro">
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <br>
+    <button onclick="login()" class="btn">Accedi</button>
+
+    <h2>Registrati</h2>
+    <input type="email" id="regEmail" placeholder="Email">
+    <input type="password" id="regPassword" placeholder="Password">
+    <br>
+    <button onclick="register()" class="btn">Registrati</button>
+
+    <h3>Recupera Password</h3>
+    <input type="email" id="resetEmail" placeholder="Inserisci la tua email">
+    <br>
+    <button onclick="resetPassword()" class="btn">Reset Password</button>
+  </section>
+
+<script src="auth.js"></script>
+
+</body>
+</html>

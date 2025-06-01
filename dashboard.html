@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>GradingOne – Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+  <header>
+    <img src="logo.png" alt="GradingOne Logo" class="logo">
+    <h1>La tua Dashboard</h1>
+  </header>
+
+  <section class="intro">
+    <h2>Carica la tua Carta</h2>
+    <input type="file" id="fileUpload" accept="image/*">
+    <button onclick="uploadCard()" class="btn">Carica e Valuta</button>
+
+    <h2>Le tue Carte Caricate</h2>
+    <div id="cardsList"></div>
+
+    <button onclick="logout()" class="btn">Logout</button>
+  </section>
+
+<script src="dashboard.js"></script>
+
+</body>
+</html>
