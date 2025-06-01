@@ -1,20 +1,17 @@
 {
-  "name": "gradingone",
+  "name": "gradingone-server",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Server per GradingOne con API IA e autenticazione",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "axios": "^1.9.0",
+    "axios": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "multer": "^2.0.0"
-  },
-  "description": ""
+    "express": "^4.18.2",
+    "multer": "^1.4.5"
+  }
 }
+
