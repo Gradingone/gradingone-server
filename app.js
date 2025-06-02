@@ -1,52 +1,61 @@
-// Import Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+// app.js
+import { auth } from './firebase-config.js';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-// Configurazione Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyDvn2qXeoGl6jwEt67Ml74jvQyDDi38QY8",
-  authDomain: "gradingone-ec528.firebaseapp.com",
-  projectId: "gradingone-ec528",
-  storageBucket: "gradingone-ec528.appspot.com",
-  messagingSenderId: "363098232645",
-  appId: "1:363098232645:web:12d8fa9c78c2679593902c"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// Registrazione/Login
-const form = document.getElementById('registrationForm');
-form.addEventListener('submit', (e) => {
+// Login
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      alert('Login effettuato!');
-      document.getElementById('upload').style.display = 'block';
-    })
-    .catch((error) => {
-      if (error.code === 'auth/user-not-found') {
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            alert('Registrazione completata!');
-            document.getElementById('upload').style.display = 'block';
-          })
-          .catch((error) => {
-            alert('Errore Firebase: ' + error.message);
-          });
-      } else {
-        alert('Errore Firebase: ' + error.message);
-      }
-    });
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    alert('Login effettuato!');
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('registration').style.display = 'none';
+    document.getElementById('upload').style.display = 'block';
+  } catch (error) {
+    alert('Errore di login: ' + error.message);
+  }
 });
 
-// Upload Form Dummy (Simulazione valutazione IA)
-const uploadForm = document.getElementById('uploadForm');
-uploadForm.addEventListener('submit', (e) => {
+// Registrazione
+document.getElementById('registrationForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const resultDiv = document.getElementById('result');
-  resultDiv.innerHTML = 'Valutazione in corso...<br><strong>Risultato:</strong> 9.5/10 - Consigliata Gradazione con PSA';
+  const name = document.getElementById('registerName').value;
+  const email = document.getElementById('registerEmail').value;
+  const password = document.getElementById('registerPassword').value;
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    alert('Registrazione completata!');
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('registration').style.display = 'none';
+    document.getElementById('upload').style.display = 'block';
+  } catch (error) {
+    alert('Errore di registrazione: ' + error.message);
+  }
+});
+
+// Caricamento e Valutazione Carta
+document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData();
+  const fileField = document.getElementById('cardImage');
+
+  formData.append('cardImage', fileField.files[0]);
+
+  try {
+    const response = await fetch('https://gradingone-server.onrender.com/upload', {
+      method: 'POST',
+      body: formData
+    });
+
+    const result = await response.json();
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerText = `Valutazione IA: ${result.result}`;
+  } catch (error) {
+    console.error('Errore:', error);
+    alert('Errore durante la valutazione della carta.');
+  }
 });
