@@ -2,7 +2,28 @@
 import { auth } from './firebase-config.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-// Login
+// Funzione per mostrare Benvenuto
+function showWelcome() {
+  document.body.innerHTML = `
+    <header>
+      <div class="logo" id="logo">G</div>
+      <h1>GradingOne</h1>
+      <p class="slogan">La tua collezione. Protetta, valutata, ovunque.</p>
+    </header>
+    <section>
+      <h2>🎉 Benvenuto su GradingOne!</h2>
+      <p>Carica la tua prima carta e ottieni la valutazione AI.</p>
+      <button onclick="goToUpload()">Vai a Carica Carta</button>
+    </section>
+  `;
+}
+
+// Quando clicca vai a caricare carta
+window.goToUpload = () => {
+  window.location.reload(); // Ricarica e riporta al form di upload normale
+};
+
+// LOGIN
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('loginEmail').value;
@@ -10,16 +31,13 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    alert('Login effettuato!');
-    document.getElementById('login').style.display = 'none';
-    document.getElementById('registration').style.display = 'none';
-    document.getElementById('upload').style.display = 'block';
+    showWelcome();
   } catch (error) {
     alert('Errore di login: ' + error.message);
   }
 });
 
-// Registrazione
+// REGISTRAZIONE
 document.getElementById('registrationForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('registerName').value;
@@ -28,17 +46,14 @@ document.getElementById('registrationForm').addEventListener('submit', async (e)
 
   try {
     await createUserWithEmailAndPassword(auth, email, password);
-    alert('Registrazione completata!');
-    document.getElementById('login').style.display = 'none';
-    document.getElementById('registration').style.display = 'none';
-    document.getElementById('upload').style.display = 'block';
+    showWelcome();
   } catch (error) {
     alert('Errore di registrazione: ' + error.message);
   }
 });
 
-// Caricamento e Valutazione Carta
-document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+// UPLOAD CARTA
+document.getElementById('uploadForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData();
   const fileField = document.getElementById('cardImage');
@@ -53,9 +68,9 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
 
     const result = await response.json();
     const resultDiv = document.getElementById('result');
-    resultDiv.innerText = `Valutazione IA: ${result.result}`;
+    resultDiv.innerText = `${result.result} GradingOne`;
   } catch (error) {
     console.error('Errore:', error);
     alert('Errore durante la valutazione della carta.');
   }
-});
+};
